@@ -65,5 +65,60 @@ public class LogfileCreator
         int minute = rand.nextInt(60);
         return new LogEntry(year, month, day, hour, minute);
     }
+    
+    /**
+     * Create a single (random) entry for a log file with a specific year.
+     * @param year The year for the log entry.
+     * @return A log entry containing random data for the specified year.
+     */
+    public LogEntry createEntry(int year)
+    {
+        int month = 1 + rand.nextInt(12);
+        // Avoid the complexities of days-per-month.
+        int day = 1 + rand.nextInt(28);
+        int hour = rand.nextInt(24);
+        int minute = rand.nextInt(60);
+        return new LogEntry(year, month, day, hour, minute);
+    }
+    
+    /**
+     * Create a file of random log entries spanning multiple years.
+     * @param filename The file to write.
+     * @param numEntriesPerYear How many entries per year.
+     * @param startYear The starting year (inclusive).
+     * @param endYear The ending year (inclusive).
+     * @return true if successful, false otherwise.
+     */
+    public boolean createMultiYearFile(String filename, int numEntriesPerYear, 
+                                       int startYear, int endYear)
+    {
+        boolean success = false;
+        
+        if(numEntriesPerYear > 0 && startYear <= endYear) {
+            int totalEntries = numEntriesPerYear * (endYear - startYear + 1);
+            try (FileWriter writer = new FileWriter(filename)) {
+                LogEntry[] entries = new LogEntry[totalEntries];
+                int index = 0;
+                
+                for(int year = startYear; year <= endYear; year++) {
+                    for(int i = 0; i < numEntriesPerYear; i++) {
+                        entries[index++] = createEntry(year);
+                    }
+                }
+                
+                Arrays.sort(entries);
+                for(int i = 0; i < totalEntries; i++) {
+                    writer.write(entries[i].toString());
+                    writer.write('\n');
+                }
+                
+                success = true;
+            }
+            catch(IOException e) {
+                System.err.println("There was a problem writing to " + filename);
+            }
+        }
+        return success;
+    }
 
 }

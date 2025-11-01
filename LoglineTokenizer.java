@@ -28,9 +28,8 @@ public class LoglineTokenizer
      */
     public void tokenize(String logline, int[] dataLine)
     {
-        try {
+        try (Scanner tokenizer = new Scanner(logline)) {
             // Scan the logline for integers.
-            Scanner tokenizer = new Scanner(logline);
             for(int i = 0; i < dataLine.length; i++) {
                 dataLine[i] = tokenizer.nextInt();
             }

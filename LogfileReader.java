@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -23,6 +22,8 @@ public class LogfileReader implements Iterator<LogEntry>
 {
     // The data format in the log file.
     private String format;
+    // The filename being read.
+    private String filename;
     // Where the file's contents are stored in the form
     // of LogEntry objects.
     private ArrayList<LogEntry> entries;
@@ -44,6 +45,7 @@ public class LogfileReader implements Iterator<LogEntry>
      */
     public LogfileReader(String filename)
     {
+        this.filename = filename;
         // The format for the data.
         format = "Year Month(1-12) Day Hour Minute";       
         // Where to store the data.
@@ -121,6 +123,14 @@ public class LogfileReader implements Iterator<LogEntry>
     public String getFormat()
     {
         return format;
+    }
+    
+    /**
+     * @return The filename being read.
+     */
+    public String getFilename()
+    {
+        return filename;
     }
     
     /**
